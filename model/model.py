@@ -80,6 +80,14 @@ class Model:
         """
 
         # TODO
+
+        lista_nx = self.get_reachable_bfs_tree(start)
+        lista_ricorsivo = self.get_reachable_ricorsivo(start)
+
+        return lista_ricorsivo
+
+
+    def get_reachable_bfs_tree(self, start):
         albero = nx.bfs_tree(self.G, start)
         lista_nodi = list(albero.nodes())
 
@@ -87,6 +95,22 @@ class Model:
             lista_nodi.remove(start)
         return lista_nodi
 
+    def get_reachable_ricorsivo(self, start):
+        visitati = []
+
+        self._ricorsione(nodo_corrente= start, visitati=visitati)
+
+        if start in visitati:
+            visitati.remove(start)
+
+        return visitati
 
 
+    def _ricorsione(self, nodo_corrente, visitati):
+        if nodo_corrente in visitati:
+            return
+        else:
+            visitati.append(nodo_corrente)
+            for vicino in self.G.neighbors(nodo_corrente):
+                self._ricorsione(vicino, visitati)
 
